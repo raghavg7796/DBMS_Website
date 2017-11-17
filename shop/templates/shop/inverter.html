@@ -1,0 +1,155 @@
+	{% with title='Inverter' %}
+	{% include 'shop/header.html' %}
+{% endwith %}
+
+  	<br><br><br>
+  			<script>
+				function radioCompanyClicked() {
+			  		document.getElementById("filter_form").submit();
+				}
+
+				function radioBatteryClicked() {
+			  		document.getElementById("filter_form").submit();
+				}
+
+				function filterCompanyRemove() {
+					var radios_company = document.forms[0];
+					for (var i = 0; i < radios_company.length; i++)
+						if(radios_company[i].name == 'company_filter')
+							radios_company[i].checked = false;
+					document.getElementById("filter_form").submit();
+
+				}
+
+				function filterBatteryRemove() {
+					var radios_company = document.forms[0];
+					for (var i = 0; i < radios_company.length; i++)
+						if(radios_company[i].name == 'battery_system_filter')
+							radios_company[i].checked = false;
+					document.getElementById("filter_form").submit();
+
+				}
+
+				$(document).ready(function(){
+				    $("#add_product_button").click(function(){
+		        		$("#add_product_form").slideDown("slow");
+				    });
+				    
+				});
+			</script>
+  			<div class="row" id="outer">
+  				<div class="col-md-2" style="border-style: inset; margin-left: 2%;" id="filter">
+  					<center><h3>Filters</h3></center>
+  					<hr>
+					{% if company != '%' %}
+  						<button type="button" class="btn" style="margin-bottom: 2%" onclick="filterCompanyRemove()">X {{company}}</button>
+  					{% endif %}	
+  					{% if battery_system != '%' %}
+  						<button type="button" class="btn" style="margin-bottom: 2%" onclick="filterBatteryRemove()">X {{battery_system}}</button>
+  					{% endif %}	
+  					<hr>
+  					<form method="GET" action="#" id="filter_form">
+	  					<div class="well well-sm">Company</div>	
+	  					{% for inv in inverter_company_list %}
+							{% if request.user.is_authenticated and request.user.is_superuser %}
+							<div class="row" style="margin-left: 2%; margin-bottom: 3%">
+								
+								<input type="radio" name="company_filter" id="company_filter" value="{{inv.company}}" onclick="radioCompanyClicked()" {% if company and company == inv.company %} checked {% endif %}>{{inv.company}} <br>{% if inv.count == 0 %} <font color="red">(0 products)</font> {% endif %} 
+								
+							</div>
+							{% else %}
+								{% if inv.count %}
+									<div class="row" style="margin-left: 2%; margin-bottom: 3%">
+										<input type="radio" name="company_filter" value="{{inv.company}}" onclick="radioCompanyClicked()" {% if company and company == inv.company %} checked {% endif %}>{{inv.company}}<br>
+									</div>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+	  					<hr>
+	  					<div class="well well-sm">Battery System</div>	
+	  					{% for inv in inverter_battery_system_list %}
+	  						<div class="row" style="margin-left: 2%; margin-bottom: 3%">
+	  							<input type="radio" name="battery_system_filter" value="{{inv.battery_system}}" onclick="radioBatteryClicked()" {% if battery_system and battery_system == inv.battery_system %} checked {% endif %}> 
+	  							{{inv.battery_system}}<br>
+	  						</div>
+	  					{% endfor %}
+	  					<hr>
+	  				</form>
+  				</div>
+  				<div class="col-md-9" id="content">
+  					<div class="row">
+  						<div class="col-md-9">
+							<center><h1>Inverters</h1></center>
+						</div>
+						<div class="col-md-3">
+							<br>
+							{% if request.user.is_authenticated and request.user.is_superuser %}
+							<button type="button" class="btn btn-default" style="float: right;" id="add_product_button" ">Add Product</button>
+							{% endif %}
+						</div>
+					</div>
+					<form method="post" action="{% url 'shop:inverter_add_product_url' %}" id="add_product_form" enctype="multipart/form-data" style="display: none;">
+					<hr>
+					<div class="row" style="margin-left: 1%">
+						{% csrf_token %}		
+							Company Name: <select name="company">
+								{% for comp in inverter_company_list %}
+									<option>{{comp.company}}</option>
+								{% endfor %}
+							</select><br>				
+							Model Name: <input type="text" name="model" required><br>
+							Price: <input type="number" step="0.01" name="price" required><br>
+							Warranty Period(in months): <input type="number" step="0.01" name="warranty" required><br>
+							Weight(in Kg): <input type="number" step="0.01" name="weight" required><br>
+							Battery_System: <input type="radio" name="Battery_System" value="Tubular" required> Tubular <input type="radio" name="Battery_System" value="Flat Plate"> Flat Plate<br>
+							Recharge Time(in minutes): <input type="number" step="0.01" name="recharge_time"  required><br>
+							Description:<br>
+							 <textarea rows="3" cols="50" name="description"></textarea><br>
+							Photo: <input type="file" name="pic_inverter" required><br>
+							<input type="submit" value="Add Product">
+					</div>
+					</form>
+					<hr>
+					{% for inv in inverter_list %}
+					<a href="{% url 'shop:inverter_product_url' company=inv.company model=inv.model %}" style="color: inherit;">
+						<div class="row">
+							<div class="col-md-3">
+								<img class="center-block img-responsive" height="300px" width="300px" src="data:image/png;base64,{{ inv.image }}">
+							</div>
+							<div class="col-md-6">
+								<div class="row">
+									<h3>{{inv.company}} {{inv.model}} {{inv.battery_system}} Inverter</h3>
+								</div>
+								<div class="row">
+									{% if inv.star %}
+										<button class="btn-success">{{inv.star}} <span class="glyphicon glyphicon-star"></span></button>
+									{% else %}
+										No reviews yet.
+									{% endif %}
+								</div>
+								<br>
+								<div class="row">
+									<ul style="padding-left: 3%">
+										<li>Warranty: {{inv.warranty}} months</li>
+										<li>Weight: {{inv.weight}} Kg</li>
+										<li>Recharge Time: {{inv.recharge_time}} minutes</li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-md-3" style="font-size: 250%;">
+								<br>
+								<i class="fa fa-rupee"></i> {{inv.price}}<br>
+								{% if request.user.is_authenticated and request.user.is_superuser %}<a href="{% url 'shop:inverter_delete_product_url' inv.company inv.model %}" onclick="return confirm('Are you sure??');"><button class="btn btn-danger">Delele</button></a>{% endif %}
+							</div>
+						</div>
+					</a>
+					<hr>
+					{% endfor %}
+					<br>
+  				</div>
+  			</div>
+  	
+
+</body>
+</html>
+	

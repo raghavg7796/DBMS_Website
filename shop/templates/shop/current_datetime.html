@@ -1,0 +1,106 @@
+<html>
+  <head onload="submitPayuForm()">
+  <script type="text/javascript">
+    var hash = "{{ hashh }}";
+    function submitPayuForm() {
+      if(hash =='') {
+        return;
+      }
+      var payuForm = document.forms.payuForm;
+      payuForm.submit();
+    }
+  </script>
+  </head>
+  <body>
+  <center>
+    <h2>Confirmation Page</h2>
+    <br/>
+    <form action={{ action }} method="post" name="payuForm">{% csrf_token %}
+      <input type="hidden" name="key" value="{{ MERCHANT_KEY }}" />
+      <input type="hidden" name="hash_string" value="{{ hash_string }}" />
+      <input type="hidden" name="hash" value="{{ hashh }}"/>
+      <input type="hidden" name="posted" value="{{ posted }}"/>
+      <input type="hidden" name="txnid" value="{{ txnid }}" />
+      <table>
+        <tr>
+          <td><b></b></td>
+        </tr>
+        <tr>
+         <td>Amount: </td>
+          <td><input name="amount" value="{{ posted.amount|default:'' }}" readonly /></td>
+          <td>Student Id: </td>
+          <td><input name="firstname" id="firstname" value="{{ posted.firstname|default:'' }}" readonly /></td>
+        </tr>
+        <tr>
+          <td>Email: </td>
+          <td><input name="email" id="email" value="{{ posted.email|default:'' }}" readonly /></td>
+          <td>Phone: </td>
+          <td><input name="phone" value="{{ posted.phone|default:'' }}" readonly /></td>
+        </tr>
+        <tr>
+          <td>Batch Id: </td>
+          <td colspan="3"><input name="productinfo" value="{{ posted.productinfo|default:'' }}" readonly /></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td colspan="3"><input type="hidden" name="surl" value="{{ posted.surl }}" size="64" /></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td colspan="3"><input type="hidden" name="furl" value="{{ posted.furl }}" size="64" /></td>
+        </tr>
+
+        <tr>
+          <td colspan="3"><input type="hidden" name="service_provider" value="payu_paisa" size="64" /></td>
+        </tr>
+             <tr>
+          <td><b></b></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="hidden" name="lastname" id="lastname" value="{{ posted.lastname }}" /></td>
+          <td></td>
+          <td><input type="hidden" name="curl" value="" /></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="hidden" name="address1" value="{{ posted.address1 }}" /></td>
+          <td></td>
+          <td><input type="hidden" name="address2" value="{{ posted.address2 }}" /></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="hidden" name="city" value="{{ posted.city }}" /></td>
+          <td></td>
+          <td><input type="hidden" name="state" value="{{ posted.state }}" /></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="hidden" name="country" value="{{ posted.country }}" /></td>
+          <td></td>
+          <td><input type="hidden" name="zipcode" value="{{ posted.zipcode }}" /></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="hidden" name="udf1" value="{{ posted.udf1 }}" /></td>
+          <td></td>
+          <td><input type="hidden" name="udf2" value="{{ posted.udf2 }}" /></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="hidden" name="udf3" value="{{ posted.udf3 }}" /></td>
+          <td></td>
+          <td><input type="hidden" name="udf4" value="{{ posted.udf4 }}" /></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="hidden" name="udf5" value="{{ posted.udf5 }}" /></td>
+          <td></td>
+          <td><input type="hidden" name="pg" value="{{ posted.PG }}" /></td>
+        </tr>
+     <td colspan="4"><input type="submit" value="Submit" /></td>
+      </table>
+    </form>
+    </center>
+  </body>
+</html>

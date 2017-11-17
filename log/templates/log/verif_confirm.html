@@ -1,0 +1,20 @@
+{% with title='Login' %}
+	{% include 'log/header.html' %}
+{%endwith%}
+<body>
+	<br><br><br>
+		<div class="row">
+			<div class="col-md-2 col-md-offset-4">
+				<img class="center-block img-responsive" src="http://via.placeholder.com/100x100">
+			</div>
+			<div class="col-md-2">
+				<h1>Jyoti Sales</h1>
+			</div>
+		</div>
+
+
+		<hr>
+		<div class="row">
+			<center><h3>Acttivation link sent to <strong>{{email}}</strong>! Please verify to Log In!</h3></center>
+			<center><a href="{% url 'shop:home_url' %}"><- Return to Home</a><center>
+		</div>

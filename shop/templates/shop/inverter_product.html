@@ -1,0 +1,205 @@
+{% with title='Product' %}
+	{% include 'shop/header.html' %}
+{% endwith %}
+
+<script> 
+	$(document).ready(function(){
+	    $("#add_review_button").click(function(){
+	    	{% if request.user.is_authenticated %}
+	    		{% if request.user.email in user_reviews_list %}
+	    			alert('You have already reviewed this product.')
+	    		{% else %}
+	        		$("#review_form").slideDown("slow");
+	    		{% endif %}
+	        {% else %}
+	        	alert('Login to add review.')
+	        	window.location = "{% url 'log:login_url' %}"
+	        {% endif %}
+	    	
+	    });
+	});
+</script>
+
+<br><br><br>
+	{% if error_message %}
+		<script>
+			alert('{{error_message}}')
+		</script>
+	{% endif %}
+  	<div class="row">
+  		<div class="col-md-10 col-md-offset-1">
+  			<div class="row">
+  				<br>
+  				<div class="col-md-4" >
+  					<div class = "row" style="border-style: groove; position: fixed; padding-left: 2%; padding-right: 2%;">
+  						<br>
+  						<img class="center-block img-responsive" height="300px" width="300px" src="data:image/png;base64,{{ inverter.image }}">
+  						<br>
+  						{% if request.user.is_authenticated and request.user.is_superuser %}
+	  						<form enctype="multipart/form-data" method="post" action="{% url 'shop:inverter_change_photo_url' inverter.company inverter.model %}">
+	  						{% csrf_token %}
+	  							<center><input type="file" name="pic" required><br><input type="submit" value="Change Photo"></center>
+	  						</form>
+	  						<br>
+  						{% endif %}
+  					</div>
+  				</div>
+
+  				<div class="col-sm-7 col-md-offset-5">
+  					<h2>{{inverter.company}} {{inverter.model}} {{inverter.battery_system}} Inverter</h2>
+  					<hr>
+  					{% if inverter.star %}
+  						<button class="btn-success">{{inverter.star}} <span class="glyphicon glyphicon-star"></span></button>
+  					{% else %}
+  						No reviews yet
+  					{% endif %}
+  					 
+					{% if request.user.is_authenticated and request.user.is_superuser %}
+						<br><br>
+  						<form method="post" action="{% url 'shop:inverter_change_quantity_url' inverter.company inverter.model %}">
+  						{% csrf_token %}
+  							<font size="3px">Quantity :</font> <input type="number" name="quantity" value="{{inverter.quantity}}" step=1> <input type="submit" value="Change Quantity">
+  						</form>
+  					{% endif %}
+  					<h3>Rs. 
+  					{% if request.user.is_authenticated and request.user.is_superuser %}
+  						<form method="post" action="{% url 'shop:inverter_change_price_url' inverter.company inverter.model %}">
+  						{% csrf_token %}
+  							<input type="number" name="price" value="{{inverter.price}}" step=0.01> <input type="submit" value="Change Price">
+  						</form>
+  					{% else %}
+  						{{inverter.price}}
+  					{% endif %}
+  					</h3>
+
+  					{% if messages %}
+					{% for message in messages %}
+				    	<script>
+				        	alert('{{ message|safe }}');
+				        </script>
+					{% endfor %}
+					{% endif %}
+
+					{% if request.user.is_authenticated and request.user.is_superuser %}
+						<button type="button" class="btn btn-danger"><a href="{% url 'shop:inverter_delete_product_url' inverter.company inverter.model %}"  onclick="return confirm('Are you sure??');" style="color: inherit;">Delete Product</a></button><br><br>
+					{% else %}
+  					{% if inverter.quantity %}
+  						<button type="button" class="btn btn-warning"><a href="{% url 'shop:inverter_order_url' inverter.company inverter.model %}" style="color: inherit;">Buy Now</a></button><br><br>
+  					{% else %}
+  						<h3>Sold Out</h3>
+  					{% endif %}
+  					{% endif %}
+  					<div>
+	  					<ul class="nav nav-tabs">
+							<li class="active"><a href="#">Features</a></li>
+						</ul>
+						<br>
+						<div>
+							
+							{% if request.user.is_authenticated and request.user.is_superuser %}
+		  						<form method="post" action="{% url 'shop:inverter_change_description_url' inverter.company inverter.model %}">
+		  						{% csrf_token %}
+		  							<textarea rows=3 cols=50 name="description">{{inverter.description}}</textarea><br>
+		  							<input type="submit" value="Change Description">
+		  						</form>
+		  					{% else %}
+		  					{% if inverter.description %}
+		  						{{inverter.description}} <br><br>
+		  					{% endif %}
+		  					{% endif %}			
+							
+							<ul>
+									<li>Warranty(in months): 
+									{% if request.user.is_authenticated and request.user.is_superuser %}
+				  						<form method="post" action="{% url 'shop:inverter_change_warranty_url' inverter.company inverter.model %}">
+				  						{% csrf_token %}
+				  							<input type="number" name="warranty" value="{{inverter.warranty}}" step=0.01> <input type="submit" value="Change Warranty">
+				  						</form>
+				  					{% else %}
+				  						{{inverter.warranty}} months
+				  					{% endif %}
+									 </li>
+									<li>Weight(in Kg): 
+									{% if request.user.is_authenticated and request.user.is_superuser %}
+				  						<form method="post" action="{% url 'shop:inverter_change_weight_url' inverter.company inverter.model %}">
+				  						{% csrf_token %}
+				  							<input type="number" name="weight" value="{{inverter.weight}}" step=0.01> <input type="submit" value="Change Weight">
+				  						</form>
+				  					{% else %}
+				  						{{inverter.weight}} Kg
+				  					{% endif %}
+				  					</li>
+									<li>Recharge Time(in minutes): 
+									{% if request.user.is_authenticated and request.user.is_superuser %}
+				  						<form method="post" action="{% url 'shop:inverter_change_recharge_time_url' inverter.company inverter.model %}">
+				  						{% csrf_token %}
+				  							<input type="number" name="recharge_time" value="{{inverter.recharge_time}}" step=0.01> <input type="submit" value="Change Recharge Time">
+				  						</form>
+				  					{% else %}
+				  						{{inverter.recharge_time}} minutes
+				  					{% endif %}
+				  					</li>
+							</ul>
+						</div>
+						<hr style="height:1px; color: black; background-color: black">
+						<div>
+							<font size="5px">Reviews</font> 
+							{% if request.user.is_authenticated and request.user.id in user_orders_list and request.user.email not in user_reviews_list %}
+								<button type="button" class="btn btn-default" style="float: right;" id="add_review_button" ">Add Review</button>
+							{% endif %}
+							<br>
+							<form method="POST" action="{% url 'shop:inverter_product_url' inverter.company inverter.model %}" id="review_form" style="display: none;">
+							{% csrf_token %}
+								<hr>	
+								<div class="row">
+									<div class="col-md-2">
+										<font size="4">Rating :</font>
+									</div>
+									<div class="col-md-10" style="padding-left: 0px">
+										<select class="form-control" id="rating" style="width: 75px;" name="rating">
+											<option>1</option>
+											<option>2</option>
+											<option>3</option>
+											<option>4</option>
+											<option>5</option>
+										</select>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-md-12"> 
+										<input type="text" class="form-control" placeholder="Enter Title" name="title" required />
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-md-12"> 
+										<textarea class="form-control" placeholder="Enter Review" name="text" required></textarea>
+									</div>
+								</div>
+								<br>
+								<center>
+									<input type="submit" value="Add Review">
+								</center>
+							</form>
+							<hr>
+							{% for rev in reviews %}
+								<button class="btn-success" style="height:25px;width:45px">{{rev.star}} <span class="glyphicon glyphicon-star"></span></button>&nbsp;&nbsp;&nbsp; 
+									<strong>{{rev.title}}</strong><br><br>
+								{{rev.text}}<br>
+								<font size="2px" color="grey">{{rev.first_name}} {{rev.last_name}}	<br> {{rev.email}}</font>
+							<hr>
+							{% endfor %}
+						</div>
+					</div>
+  				</div>
+  			</div>
+  		</div>
+  	</div>
+
+
+  	
+
+
+</body>
+</html>

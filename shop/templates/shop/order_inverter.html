@@ -1,0 +1,72 @@
+{% with title='Home' %}
+	{% include 'shop/header.html' %}
+{% endwith %}
+
+  	<br><br><br>
+  	<script>
+  		function changeTotal() {
+  			document.getElementById("price").innerHTML = parseFloat(document.getElementById("sel1").value) * parseFloat({{inverter.price}});
+  		}
+  	</script>
+  	<div class="row" style="margin-left: 2%; margin-right: 20% ;">
+  		<button type="button" class="btn btn-block"><h4>Set Order</h4></button>
+  	</div>
+  	<div class="row" style="margin-left: 2%; padding-left: 2%; margin-right: 20% ;border-style: inset;">
+	  	<form method="post" action="{% url 'shop:inverter_place_order_url' %}	">
+	  	{% csrf_token %}
+	  	<div class="row" >
+			<div class="col-md-2" >
+  					<br>
+  					<img class="center-block img-responsive" height="300px" width="300px" src="data:image/png;base64,{{ inverter.image }}">
+  					<br>
+			</div>
+			<div class="col-md-5">
+				<br>
+				<div class="row">
+					<h4>{{inverter.company}} {{inverter.model}} {{inverter.battery_system}} Inverter</h4>
+				</div>
+				<div class="row">
+					<ul style="padding-left: 3%">
+						<li>Warranty: {{inverter.warranty}} months</li>
+						<li>Weight: {{inverter.weight}} Kg</li>
+						<li>Recharge Time: {{inverter.recharge_time}} minutes</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-1">
+				<br><br>
+				<div class="form-group">
+				  Quanity: <br>
+				  <select class="form-control" id="sel1" name="quantity" onchange="changeTotal();">
+				    <option>1</option>
+				    <option>2</option>
+				  </select>
+				</div>
+			</div>
+			<div class="col-md-2 col-md-offset-2" >
+				<br><br><br>
+				Total: <container id="price">{{inverter.price}}</container>
+			</div>
+		</div>
+		<hr style="padding-right: 3%">
+	  	<div class="row" style="padding-bottom: 2%">	
+	  		<br>
+	  		<div class="col-md-3">
+	  		Name:<br><br>
+	  		Delievery Address: <br><br><br><br><br><br>
+	  		Phone Number:	
+	  		</div>
+	  		<div class="col-md-4">
+	  			{{request.user.first_name}} {{request.user.last_name}} <br><br>
+	  			<textarea class="form-control" rows="4" name="address" required></textarea><br>
+	  			<input type="text" name="phone" required><br><br>
+	  			
+	  			<input type = "text" name="company" value="{{inverter.company}}" hidden>
+	  			<input type="text" name="model" value = "{{inverter.model}}" hidden>
+	  			<input type="number" name="price" value="{{inverter.price}}" hidden>
+	  			<button type="submit" class="btn btn-success">Place Order</button>
+	  		</div>
+	  	</div>
+	  </form>
+  	</div>
+  	<br><br>

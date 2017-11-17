@@ -1,0 +1,80 @@
+{% load static %}
+
+<head>
+  <title>{{title}}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="row">
+		<nav class="navbar navbar-default navbar-fixed-top" style="background-color: None;">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="{% url 'shop:home_url' %}">Jyoti {% if request.user.is_authenticated and request.user.is_superuser %} Administration {% else %} Electricals {% endif %} <span class="glyphicon glyphicon-envelope"></span></a>
+		    </div>	
+		    <ul class="nav navbar-nav">
+		      	<li class="dropdown">
+				    <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Inverters</a>
+				    <ul class="dropdown-menu">
+				    	<li><a href="{% url 'shop:inverter_url' 	%}">All</a></li>
+						<li class="divider"></li>
+			      		<li class="dropdown-header">Company</li>
+			      		{% for inv in inverter_company_list %}
+  							{% if request.user.is_authenticated and request.user.is_superuser %}
+  							<li><a href="{% url 'shop:inverter_url' %}?company_filter={{inv.company}}">{{inv.company}}{% if inv.count == 0 %} <font color="red">(0 products)</font> {% endif %}</a>	</li>
+  							{% else %}
+  								{% if inv.count %}
+  								<li><a href="{% url 'shop:inverter_url' %}?company_filter={{inv.company}}">{{inv.company}}</a></li>
+  								{% endif %}
+  							{% endif %}
+	  					{% endfor %}
+						<li class="divider"></li>
+						<li class="dropdown-header">Battery System</li>
+			      		{% for inv in inverter_battery_system_list %}
+							<li><a href="{% url 'shop:inverter_url' %}?battery_system_filter={{inv.battery_system}}">{{inv.battery_system}}</a></li>
+						{% endfor %}
+				    </ul>
+			  	</li>
+			  	{% if request.user.is_authenticated %}
+			  	<li>
+			  		 <li><a href="{% url 'shop:inverter_all_orders_url' %}	">Orders</a></li>
+			  	</li>
+			  	{% if request.user.is_superuser %}
+			  	<li>
+			  		<li><a href="{% url 'shop:inverter_dealers_url' %}">Dealers</a></li>
+			  	</li>
+			  	{% endif %}
+			  	{% endif %}
+		    </ul>
+		    <ul class="nav navbar-nav navbar-right">
+	    	{% if request.user.is_authenticated %}
+			    <li class="dropdown">
+				    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				    	<span class="glyphicon glyphicon-user"></span> {{request.user.first_name}} {{request.user.last_name}} {% if request.user.is_superuser %}(Admin){% endif %}
+				    </a>
+				    <ul class="dropdown-menu">
+				      {% if request.user.is_superuser %}{% else %}<li><a href="{% url 'shop:inverter_all_orders_url' %}">My Orders</a></li>{% endif %}
+				      <li><a href="{% url 'log:logout_url' %}?next={{ request.build_absolute_uri|urlencode }}">Sign Out</a></li>
+				    </ul>
+			  	</li>
+			 {% else %}
+			 	<li><a href="{% url 'log:login_url' %}	">Log In</a></li>
+			 {% endif %}
+			</ul>
+		    <div class="collapse navbar-collapse navbar-right">
+		    	
+		    </div>
+		  </div>
+		</nav>
+  	</div>
+  	<script>
+		$('ul.nav li.dropdown').hover(function() {
+			$(this).find('.dropdown-menu').stop(true, true).delay(100).fadeIn(100);
+			}, function() {
+			$(this).find('.dropdown-menu').stop(true, true).delay(100).fadeOut(100);
+		});
+	</script>

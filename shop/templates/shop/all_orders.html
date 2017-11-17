@@ -1,0 +1,97 @@
+	{% with title='Inverter' %}
+	{% include 'shop/header.html' %}
+{% endwith %}
+
+  	<br><br><br>
+  			<script>
+				function radioCompanyClicked() {
+			  		document.getElementById("filter_form").submit();
+				}
+
+				function filterCompanyRemove() {
+					var radios_company = document.forms[0];
+					for (var i = 0; i < radios_company.length; i++)
+						if(radios_company[i].name == 'company_filter')
+							radios_company[i].checked = false;
+					document.getElementById("filter_form").submit();
+
+				}
+			
+			</script>
+  			<div class="row" id="outer">
+  				<div class="col-md-2" style="border-style: inset; margin-left: 2%;" id="filter">
+  					<center><h3>Filters</h3></center>
+  					<hr>
+					{% if company != '%' %}
+  						<button type="button" class="btn" style="margin-bottom: 2%" onclick="filterCompanyRemove()">X {{company}}</button>
+  					{% endif %}	
+  					<hr>
+  					<form method="GET" action="#" id="filter_form">
+	  					<div class="well well-sm">Company</div>	
+	  					{% for inv in inverter_company_list %}
+  								<div class="row" style="margin-left: 2%; margin-bottom: 3%">
+  									<input type="radio" name="company_filter" value="{{inv.company}}" onclick="radioCompanyClicked()" {% if company and company == inv.company %} checked {% endif %}>{{inv.company}}<br>
+  								</div>
+	  					{% endfor %}
+	  					<hr>
+	  				</form>
+  				</div>
+  				<div class="col-md-9" id="content">
+  					<div class="row">
+  					<div class="col-md-12">
+							<center><h1>Orders</h1></center>
+					</div>
+					</div>
+					<hr style="height:1px; color: black; background-color: black">
+					<br>
+					<table class="table" style="table-layout: fixed; width: 100%;">
+					    <thead>
+					      <tr>
+					        <th>Name</th>
+					        <th>Product</th>
+					        <th>Time</th>
+					        <th>Quanity</th>
+					        <th>Address</th>
+					        <th>Phone</th>
+					        <th>Status</th>
+					      </tr>
+					    </thead>
+					    <tbody>
+					      {% for ord in orders_list %}
+					      {% if ord.status == 0 %}
+					      <tr class="danger">
+						        <td style="word-wrap:break-word;">{{ord.first_name}} {{ord.last_name}}</td>
+						        <td style="word-wrap:break-word;">{{ord.company}} {{ord.model}}</td>
+						        <td>{{ord.time}}</td>
+						        <td>{{ord.quantity}}</td>
+						        <td style="word-wrap:break-word;">{{ord.address}}<br></td>
+						        <td>{{ord.phone}}</td>
+						        <td>Not Delievered {% if request.user.is_superuser %}<br><a href="{% url 'shop:inverter_change_order_status_url' ord.id %}" style="color: inherit;"><button>Change Status</button>{% endif %}</td>
+					      </tr>      
+					  	  
+					  	  {% endif %}
+					      {% endfor %}
+					      {% for ord in orders_list %}
+					      {% if ord.status  %}
+					      <a href="#">
+					      <tr class="success">
+						        <td style="word-wrap:break-word;">{{ord.first_name}} {{ord.last_name}}</td>
+						        <td style="word-wrap:break-word;">{{ord.company}} {{ord.model}}</td>
+						        <td>{{ord.time}}</td>
+						        <td>{{ord.quantity}}</td>
+						        <td style="word-wrap:break-word;">{{ord.address}}<br></td>
+						        <td>{{ord.phone}}</td>
+						        <td>Delievered</td>
+					      </tr>      
+					  	  </a>
+					  	  {% endif %}
+					      {% endfor %}
+					    </tbody>
+				  	</table>
+  				</div>
+  			</div>
+  	
+
+</body>
+</html>
+	

@@ -1,0 +1,158 @@
+{% with title='Home' %}
+	{% include 'shop/header.html' %}
+{% endwith %}
+
+  	<br><br><br>
+  	<script>
+		$(document).ready(function(){
+		    $("#add_company_button").click(function(){
+		        		$("#add_company_form").slideDown("slow");
+				    });
+		});
+			
+			</script>
+  	<div class = "row">
+  		<div class="col-md-12">
+		  	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+			  	<!-- Indicators -->
+				<ol class="carousel-indicators">
+					<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+					<li data-target="#myCarousel" data-slide-to="1"></li>
+					<li data-target="#myCarousel" data-slide-to="2"></li>
+				</ol>
+
+				<!-- Wrapper for slides -->
+				
+				<div class="carousel-inner">
+					<div class="item active">
+				  		<img class="center-block img-responsive" src="http://via.placeholder.com/1200x400">
+					</div>
+					<div class="item">
+				  		<img class="center-block img-responsive" src="http://via.placeholder.com/1200x400">
+					</div>
+				</div>
+
+				<!-- Left and right controls -->
+				<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+					<span class="glyphicon glyphicon-chevron-left"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="right carousel-control" href="#myCarousel" data-slide="next">
+					<span class="glyphicon glyphicon-chevron-right"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			</div>
+			<hr>
+		</div>
+	</div>
+	{% if request.user.is_authenticated and request.user.is_superuser %}
+	<div class="row"">
+		<div class="col-md-5">
+			<hr>
+		</div>
+		<div class="col-md-2">
+			<center><button type="button" class="btn btn-default" id="add_company_button" ">Add Company</button></center>
+		</div>
+		<div class="col-md-5">
+			<hr>
+		</div>
+	</div>
+	<form method="post" action="{% url 'shop:inverter_add_company_url' %}" id="add_company_form" enctype="multipart/form-data"  style="display: none;">
+	{% csrf_token %}
+		<div class="row" style="margin-left: 1%">
+				<div class="col-md-5">
+			  Company Name: <input type="text" name="company" required><br>
+			 Photo: <input type="file" name="pic" required><br>
+			<input type="submit" value="Add Company">
+			 
+			</div>
+		</div>
+	</form>
+	<hr>
+	{% endif %}
+	<div class = "row">
+  		<div class="col-md-12 ">
+  			<div class="col-md-2">
+  				<br><br><br>
+  				<center>
+  					<h2>Inverters</h2>
+  				</center>
+  				<br>
+  				<div class="row" >
+  					<center><a href="{% url 'shop:inverter_url' %}"><button type="button" class="btn btn-primary">View All</button></a></center>
+  				</div>
+  			</div>
+  			<div class="col-md-10">
+			  	<div id="carousel_inverter" class="carousel slide" data-ride="carousel">
+
+					<!-- Wrapper for slides -->
+					<div class="carousel-inner">
+						{% if request.user.is_authenticated and request.user.is_superuser %}
+				        	{% for inv in inverter_company_list %}
+				        	{% if forloop.counter0|divisibleby:4 %}
+				        		<div class="item {% if forloop.first %} active {% endif %}">
+				        			<div class="row">
+				        	{% endif %}	       
+				        				<div class="col-md-3 nopadding">
+				        				<a href="{% url 'shop:inverter_url' %}?company={{inv.company}}" style="color: inherit;"> 
+				        					<img class="center-block img-responsive" height="600px" width="600px" src="data:image/png;base64,{{ inv.image }}">
+				        					<center><strong><h4>{{inv.company}}{% if inv.count == 0 %} <font color="red">(0 products)</font> {% endif %}</h4></strong></center>
+				        				</a> 		
+					  						<form enctype="multipart/form-data" method="post" action="{% url 'shop:inverter_change_company_photo_url' inv.company %}">
+					  						{% csrf_token %}
+					  							<div class="row" style="margin-left: 13%">
+					  							<input type="file" name="pic" required><br>
+					  							</div>
+					  							<center><input type="submit" value="Change Photo"></center>
+					  						</form>
+					  						<br>
+					  						<center><a href="{% url 'shop:inverter_delete_company_url' inv.company %}" onclick="return confirm('Are You Sure? Deleting a company also deletes all its products!!');"><button type="button" class="btn btn-danger">Delete Company</button></a></center>
+					  					</div>
+	        				{% if forloop.counter0|add:1|divisibleby:4 or forloop.last%}
+				        			</div>
+			        			</div>
+				        	{% endif %}		
+					        {% endfor %}
+				        {% else %}
+				        	{% for inv in company_quant_list %}
+				        	{% if forloop.counter0|divisibleby:4 %}
+				        		<div class="item {% if forloop.first %} active {% endif %}">
+				        			<div class="row">
+				        	{% endif %}	  
+				        				<a href="{% url 'shop:inverter_url' %}?company={{inv.company}}" style="color: inherit;">      
+				        				<div class="col-md-3 nopadding">
+				        					<img class="center-block img-responsive" height="600px" width="600px" src="data:image/png;base64,{{ inv.image }}">
+				        					<center><strong><h4>{{inv.company}}</h4></strong></center>
+				        				</div>
+				        				</a> 		
+	        				{% if forloop.counter0|add:1|divisibleby:4 or forloop.last%}
+				        			</div>
+			        			</div>
+				        	{% endif %}		
+				        {% endfor %}
+				        {% endif %}
+			        	
+				    </div>
+					<a class="left carousel-control" href="#carousel_inverter" data-slide="prev" style="height: 100%px; width: 5%">
+						<span class="glyphicon glyphicon-chevron-left"></span>
+						<span class="sr-only">Next</span>
+					</a>
+					<a class="right carousel-control" href="#carousel_inverter" data-slide="next" style="height: 100%px; width: 5%">
+						<span class="glyphicon glyphicon-chevron-right"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
+				<hr>
+			</div>
+		</div>
+	</div>
+
+
+	
+
+
+
+
+
+
+</body>

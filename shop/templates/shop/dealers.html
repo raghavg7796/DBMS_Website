@@ -1,0 +1,66 @@
+	{% with title='Dealers' %}
+	{% include 'shop/header.html' %}
+{% endwith %}
+
+  	<br><br><br>
+  			<script>
+				$(document).ready(function(){
+				    $("#add_dealer_button").click(function(){
+		        		$("#add_dealer_form").slideDown("slow");
+				    });
+				});
+			
+			</script>
+  			<div class="row" id="outer">
+  				<div class="col-md-11" id="content" style="margin-left: 3%;">
+  					<div class="row">
+	  					<div class="col-md-11">
+								<center><h1>Dealers</h1></center>
+						</div>
+						<div class="col-md-1">
+								<br>
+								<button type="button" class="btn btn-default" style="float: right;" id="add_dealer_button" ">Add Dealer</button>
+						</div>
+					</div>
+					<form method="post" action="{% url 'shop:inverter_add_dealer_url' %}" id="add_dealer_form" style="display: none;">
+					<div class="row">
+					<hr>
+					{% csrf_token %}
+						     <div class="col-md-12">
+							 Name: &nbsp;<input type="text" name="name" required><br>
+							 Phone: <input type="text" name="phone"><br>
+							 Address:<br>
+							 <textarea rows=3 cols=50 name="address"></textarea><br><br>
+							 <input type="submit" value="Add Dealer">
+							</div>
+					</div>
+					</form>
+					<hr style="height:1px; color: black; background-color: black">
+					<table class="table table-striped" style="table-layout: fixed; width: 100%;">
+					    <thead>
+					      <tr>
+					      	<th>Serial No.</th>
+					        <th>Name</th>
+					        <th>Address</th>
+					        <th>Phone</th>
+					      </tr>
+					    </thead>
+					    <tbody>
+					      {% for deal in dealers_list %}
+					      <tr>
+						        <td>{{forloop.counter}}</td>
+						        <td>{{deal.name}}</td>
+						        <td style="word-wrap:break-word;">{{deal.address}}</td>
+						        <td>{{deal.phone}}</td>
+					      </tr>      
+					  	  
+					      {% endfor %}
+					    </tbody>
+				  	</table>
+  				</div>
+  			</div>
+  	
+
+</body>
+</html>
+	
