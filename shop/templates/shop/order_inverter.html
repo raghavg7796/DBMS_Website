@@ -12,7 +12,7 @@
   		<button type="button" class="btn btn-block"><h4>Set Order</h4></button>
   	</div>
   	<div class="row" style="margin-left: 2%; padding-left: 2%; margin-right: 20% ;border-style: inset;">
-	  	
+	 <form method="post" action="{% url 'shop:inverter_place_order_url' inverter.company inverter.model %}"> 	
 	  	<div class="row" >
 			<div class="col-md-2" >
   					<br>
@@ -57,18 +57,12 @@
 	  		</div>
 	  		<div class="col-md-4">
 	  			{{request.user.first_name}} {{request.user.last_name}} <br><br>
-	  			{{posted.address}}
-	  			{{posted.phone}}<br><br>
+	  			<textarea rows=3 cols=50 name="address"></textarea>
+	  			<input type="text" name="phone"><br><br>
 	  			
 	  			<input type = "text" name="company" value="{{inverter.company}}" hidden>
 	  			<input type="text" name="model" value = "{{inverter.model}}" hidden>
 	  			<input type="number" name="price" value="{{inverter.price}}" hidden>
-	  			<button type="submit" class="btn btn-success">Place Order</button>
-	  		</div>
-	  	</div>
-	  
-  	</div>
-  	<br><br>="number" name="price" value="{{inverter.price}}" hidden>
 	  			<button type="submit" class="btn btn-success">Place Order</button>
 	  		</div>
 	  	</div>
