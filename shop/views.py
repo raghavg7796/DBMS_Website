@@ -181,7 +181,7 @@ def inverter_order_view(request, company, model):
 @csrf_protect
 @csrf_exempt
 @login_required
-def inverter_place_order_view(request, company, model):
+def inverter_place_order_view(request):
 	company = request.POST['company']
 	model = request.POST['model']
 	address = request.POST['address']
@@ -207,7 +207,8 @@ def inverter_place_order_view(request, company, model):
 	posted['firstname']=str(request.user.first_name).upper()
 	posted['lastname']=str(request.user.last_name).upper()
 	posted['email'] = str(request.user.email).upper()
-	posted['productinfo'] = company + ' ' + model
+	posted['productinfo'] = {'company': company, 'model': model, 'price': price, 'quantity': quanity, 'user_id': user_id}
+	posted['address1'] = addres
 	hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10"
 	posted['key']=key
 	posted['surl']="https://raghavg7796.pythonanywhere.com/shop/success/"
@@ -268,15 +269,16 @@ def success(request):
 		return redirect('/shop/')
 	
 	firstname=request.POST["firstname"]
+	user_if = request.POST["productinfo"]["user_id"]
 	amount=request.POST["amount"]
 	txnid=request.POST["txnid"]
 	posted_hash=request.POST["hash"]
 	key=request.POST["key"]
-	productinfo=request.POST["productinfo"]
+	quantity = request.POST["productinfo"]["quantity"]
+	company = request.POST["productinfo"]["company"]
+	model = request.POST["productinfo"]["model"]
 	email=request.POST["email"]
 	salt="KJfs9LzBqo"
-
-	[company, model] = [productinfo.split(' ')]
 
 	try:
 		additionalCharges=request.POST["additionalCharges"]
@@ -292,14 +294,12 @@ def success(request):
 
 		sql = """select quantity, price from inverter where company like '%s' and model like '%s'"""%(company, model)
 		cursor.execute(sql)
-		result = cursor.fetchone()
-		quant = amount // result['price']
+		result = cursor.fetchone()	
 		sql = """update inverter
 			set quantity = %d
 			where i.company like '%s' and i.model like '%s'
-			"""%(result['quanity']-quant, company, model)
+			"""%(result['quanity']-quantity, company, model)
 		cursor.execute(sql)
-		result = cursor.fetchone()
 
 		sql = """insert into inverter_order(user_id, company, model, address, phone, status, quantity)
 			values(%d, '%s', '%s', '%s', '%s', 0, %d)
