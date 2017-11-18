@@ -189,6 +189,7 @@ def inverter_place_order_view(request):
 	quantity = int(request.POST['quantity'])
 	user_id = request.user.id
 	amount = quantity * float(request.POST['price'])
+	price = float(request.POST['price'])
 	
 	MERCHANT_KEY = "zkHhZ9b8"
 	key="zkHhZ9b8"
