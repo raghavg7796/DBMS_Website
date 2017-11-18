@@ -28,9 +28,9 @@
 					{% csrf_token %}
 						     <div class="col-md-12">
 							 Name: &nbsp;<input type="text" name="name" required><br>
-							 Phone: <input type="text" name="phone"><br>
+							 Phone: <input type="text" name="phone" pattern="[789][0-9]{9}"><br>
 							 Address:<br>
-							 <textarea rows=3 cols=50 name="address"></textarea><br><br>
+							 <textarea maxlength="150" rows=3 cols=50 name="address"></textarea><br><br>
 							 <input type="submit" value="Add Dealer">
 							</div>
 					</div>

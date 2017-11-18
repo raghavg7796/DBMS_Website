@@ -52,17 +52,17 @@
 	  		<br>
 	  		<div class="col-md-3">
 	  		Name:<br><br>
-	  		Delievery Address: <br><br><br><br><br><br>
+	  		Delievery Address: <br><br><br><br>
 	  		Phone Number:	
 	  		</div>
 	  		<div class="col-md-4">
 	  			{{request.user.first_name}} {{request.user.last_name}} <br><br>
-	  			<textarea rows=3 cols=50 name="address"></textarea>
-	  			<input type="text" name="phone"><br><br>
+	  			<textarea maxlength="150" rows=3 cols=50 name="address"></textarea>
+	  			<input type="text" pattern="[789][0-9]{9}" name="phone"><br><br>
 	  			
 	  			<input type = "text" name="company" value="{{inverter.company}}" hidden>
 	  			<input type="text" name="model" value = "{{inverter.model}}" hidden>
-	  			<input type="number" name="price" value="{{inverter.price}}" hidden>
+	  			<input type="number" min="0" name="price" value="{{inverter.price}}" hidden>
 	  			<button type="submit" class="btn btn-success">Place Order</button>
 	  		</div>
 	  	</div>

@@ -58,14 +58,14 @@
 						<br><br>
   						<form method="post" action="{% url 'shop:inverter_change_quantity_url' inverter.company inverter.model %}">
   						{% csrf_token %}
-  							<font size="3px">Quantity :</font> <input type="number" name="quantity" value="{{inverter.quantity}}" step=1> <input type="submit" value="Change Quantity">
+  							<font size="3px">Quantity :</font> <input type="number" min="0" name="quantity" value="{{inverter.quantity}}" step=1> <input type="submit" value="Change Quantity">
   						</form>
   					{% endif %}
   					<h3>Rs. 
   					{% if request.user.is_authenticated and request.user.is_superuser %}
   						<form method="post" action="{% url 'shop:inverter_change_price_url' inverter.company inverter.model %}">
   						{% csrf_token %}
-  							<input type="number" name="price" value="{{inverter.price}}" step=0.01> <input type="submit" value="Change Price">
+  							<input type="number" name="price" min="0" value="{{inverter.price}}" step=0.01> <input type="submit" value="Change Price">
   						</form>
   					{% else %}
   						{{inverter.price}}
@@ -99,7 +99,7 @@
 							{% if request.user.is_authenticated and request.user.is_superuser %}
 		  						<form method="post" action="{% url 'shop:inverter_change_description_url' inverter.company inverter.model %}">
 		  						{% csrf_token %}
-		  							<textarea rows=3 cols=50 name="description">{{inverter.description}}</textarea><br>
+		  							<textarea rows=3 maxlength="150" cols=50 name="description">{{inverter.description}}</textarea><br>
 		  							<input type="submit" value="Change Description">
 		  						</form>
 		  					{% else %}
@@ -174,7 +174,7 @@
 								<br>
 								<div class="row">
 									<div class="col-md-12"> 
-										<textarea class="form-control" placeholder="Enter Review" name="text" required></textarea>
+										<textarea class="form-control" maxlength="150" placeholder="Enter Review" name="text" required></textarea>
 									</div>
 								</div>
 								<br>
