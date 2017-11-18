@@ -30,7 +30,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 
 def add_navbar_context(context):
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 
 	sql = """select c.name as company, c.image, count(i.model) as count
@@ -83,7 +83,7 @@ def inverter_view(request):
 		where i.company like '%s' and i.battery_system like '%s'
 		group by i.model, i.company, i.price, i.warranty, i.weight, i.battery_system, i.recharge_time, i.image
 		"""%(company, battery_system);
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	cursor.execute(sql)
 	result = cursor.fetchall()
@@ -98,7 +98,7 @@ def inverter_product_view(request, company, model):
 	context = {}
 	add_navbar_context(context)
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	if request.POST and 'rating' in request.POST and request.POST['rating'] and 'title' in request.POST and request.POST['title'] and 'text' in request.POST and request.POST['text']:
 		star = int(request.POST['rating'])
@@ -165,7 +165,7 @@ def inverter_order_view(request, company, model):
 	context = {}
 	add_navbar_context(context)
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """
 		select i.model, i.image, i.company, i.price, i.warranty, i.weight, i.battery_system, i.recharge_time
@@ -229,7 +229,7 @@ def inverter_place_order_view(request, company, model):
 	context = {}
 	add_navbar_context(context)
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 
 	sql = """select quantity 
@@ -287,7 +287,7 @@ def success(request):
 	if(hashh !=posted_hash):
 		print ("Invalid Transaction. Please try again")
 	else:
-		db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+		db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 		cursor = db.cursor(pymysql.cursors.DictCursor)
 
 		sql = """select quantity, price from inverter where company like '%s' and model like '%s'"""%(company, model)
@@ -351,7 +351,7 @@ def inverter_all_orders_view(request):
 	else:
 		company = '%'
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	if request.user.is_superuser:
 		sql = """select i.id, i.time, a.first_name, a.last_name, a.email, i.company, i.model, i.address, i.phone, i.quantity, i.status
@@ -380,7 +380,7 @@ def inverter_add_company_view(request):
 	x = img.read()
 	imgenc = base64.encodestring(x)
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	# sql = """insert into inverter_company(name, description, image)
 	# 	values('%s', '%s', '%s')
@@ -408,7 +408,7 @@ def inverter_add_product_view(request):
 	x = img.read()
 	imgenc = base64.encodestring(x)
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """insert into inverter(company, description, model, price, warranty, weight, battery_system, recharge_time, quantity, image)
 		values(%s, %s, %s, %s, %s, %s, %s, %s, 0, %s)
@@ -422,7 +422,7 @@ def inverter_add_product_view(request):
 @user_passes_test(lambda u: u.is_superuser)
 def inverter_delete_product_view(request, company, model):
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """delete from inverter
 		where company like '%s' and model like '%s'
@@ -436,7 +436,7 @@ def inverter_delete_product_view(request, company, model):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def inverter_delete_company_view(request, company):
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """delete from inverter_company
 		where name like '%s'
@@ -451,7 +451,7 @@ def inverter_delete_company_view(request, company):
 def inverter_change_price_view(request, company, model):
 	price = float(request.POST['price'])
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """update inverter
 		set price = %f
@@ -467,7 +467,7 @@ def inverter_change_price_view(request, company, model):
 def inverter_change_warranty_view(request, company, model):
 	warranty = float(request.POST['warranty'])
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """update inverter
 		set warranty = %f
@@ -483,7 +483,7 @@ def inverter_change_warranty_view(request, company, model):
 def inverter_change_weight_view(request, company, model):
 	weight = float(request.POST['weight'])
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """update inverter
 		set weight = %f
@@ -499,7 +499,7 @@ def inverter_change_weight_view(request, company, model):
 def inverter_change_quantity_view(request, company, model):
 	quantity = int(request.POST['quantity'])
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """update inverter
 		set quantity = %d
@@ -515,7 +515,7 @@ def inverter_change_quantity_view(request, company, model):
 def inverter_change_recharge_time_view(request, company, model):
 	recharge_time = float(request.POST['recharge_time'])
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """update inverter
 		set recharge_time = %f
@@ -531,7 +531,7 @@ def inverter_change_recharge_time_view(request, company, model):
 def inverter_change_description_view(request, company, model):
 	description = request.POST['description']
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """update inverter
 		set description = '%s'
@@ -549,7 +549,7 @@ def inverter_change_photo_view(request, company, model):
 	x = img.read()
 	imgenc = base64.encodestring(x)
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """update inverter
 		set image = %s
@@ -567,7 +567,7 @@ def inverter_change_company_photo_view(request, company):
 	x = img.read()
 	imgenc = base64.encodestring(x)
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """update inverter_company
 		set image = %s
@@ -581,7 +581,7 @@ def inverter_change_company_photo_view(request, company):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def inverter_change_order_status_view(request, order_id):
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """update inverter_order
 		set status = %s
@@ -598,7 +598,7 @@ def inverter_dealers_view(request):
 	context = {}
 	add_navbar_context(context)
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """select *
 		from inverter_dealer
@@ -617,7 +617,7 @@ def inverter_add_dealer_view(request):
 	phone = request.POST['phone']
 	address = request.POST['address']
 
-	db = pymysql.connect(host='localhost', user='root', passwd='Qwerty@123', db='dbms_database')
+	db = pymysql.connect(host='raghavg7796.mysql.pythonanywhere-services.com', user='raghavg7796', passwd='Qwerty@123', db='raghavg7796$dbms_database')
 	cursor = db.cursor(pymysql.cursors.DictCursor)
 	sql = """insert into inverter_dealer(name, address, phone)
 		values('%s', '%s', '%s')
