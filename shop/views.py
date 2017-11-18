@@ -208,7 +208,7 @@ def inverter_place_order_view(request):
 	posted['firstname']=str(request.user.first_name).upper()
 	posted['lastname']=str(request.user.last_name).upper()
 	posted['email'] = str(request.user.email).upper()
-	posted['productinfo'] = {'company': company, 'model': model, 'price': price, 'quantity': quanity, 'user_id': user_id}
+	posted['productinfo'] = {'company': company, 'model': model, 'price': price, 'quantity': quantity, 'user_id': user_id}
 	posted['address1'] = addres
 	hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10"
 	posted['key']=key
