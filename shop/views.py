@@ -306,7 +306,7 @@ def success(request):
 			"""%(int(firstname), company, model, firstname, firstname, quant)
 		cursor.execute(sql)
 		db.commit()
-		db.close()()
+		db.close()
 	
 	context = {}
 	add_navbar_context(context)
@@ -339,7 +339,7 @@ def failure(request):
 
 	context = {}
 	add_navbar_context(context)
-	return render(request, 'portal/fail_order.html', context)
+	return render(request, 'portal/fail_order_2.html', context)
 
 @login_required
 def inverter_all_orders_view(request):
