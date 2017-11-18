@@ -212,7 +212,7 @@ def inverter_place_order_view(request, company, model):
 	posted['key']=key
 	posted['surl']="https://raghavg7796.pythonanywhere.com/shop/success/"
 	posted['furl']="https://raghavg7796.pythonanywhere.com/shop/failure/"
-	posted['amount']=amount
+	posted['amount']=1
 
 	hash_string=''
 	hashVarsSeq=hashSequence.split('|')
@@ -310,7 +310,7 @@ def success(request):
 	
 	context = {}
 	add_navbar_context(context)
-	return render(request, 'portal/confirm_order.html', context)
+	return render(request, 'shop/confirm_order.html', context)
 
 @login_required
 @csrf_protect
@@ -339,7 +339,7 @@ def failure(request):
 
 	context = {}
 	add_navbar_context(context)
-	return render(request, 'portal/failure.html', context)
+	return render(request, 'shop/fail_order.html', context)
 
 @login_required
 def inverter_all_orders_view(request):
