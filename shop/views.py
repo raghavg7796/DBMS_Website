@@ -339,7 +339,7 @@ def failure(request):
 
 	context = {}
 	add_navbar_context(context)
-	return render(request, 'portal/fail_order_2.html', context)
+	return render(request, 'portal/failure.html', context)
 
 @login_required
 def inverter_all_orders_view(request):
