@@ -2,7 +2,7 @@
 
 An utterly fantastic project starter template for Django 1.11.
 
-## Features
+## Features :
 
 - Production-ready configuration for Static Files, Database Settings, Gunicorn, etc.
 - Enhancements to Django's static file serving functionality via WhiteNoise.
