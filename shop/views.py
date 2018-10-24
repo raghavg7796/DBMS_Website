@@ -627,3 +627,4 @@ def inverter_add_dealer_view(request):
 	db.close()
 
 	return HttpResponseRedirect(reverse('shop:inverter_dealers_url', args=()))
+#end
