@@ -41,7 +41,7 @@ See also, a [ready-made application](https://github.com/heroku/python-getting-st
 
 ## Using Python 2.7?
 
-Just update `runtime.txt` to `python-2.7.13` (no trailing spaces or newlines!).
+Just update `runtime.txt` to `python-2.7.13` (no trailing spaces or newlines!). kar do be!
 
 
 ## License: MIT
